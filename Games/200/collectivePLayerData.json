@@ -1,0 +1,15 @@
+[ {
+  "posX" : 4,
+  "posY" : 1,
+  "color" : "green1",
+  "energyCubes" : 0,
+  "name" : "Player 2",
+  "readyState" : false
+}, {
+  "posX" : 4,
+  "posY" : 1,
+  "color" : "green1",
+  "energyCubes" : 0,
+  "name" : "Player 2",
+  "readyState" : false
+} ]

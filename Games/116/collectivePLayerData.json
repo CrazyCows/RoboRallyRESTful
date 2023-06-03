@@ -1,0 +1,8 @@
+{
+  "posX" : 4,
+  "posY" : 1,
+  "color" : "green",
+  "energyCubes" : 0,
+  "name" : "Player 2",
+  "readyState" : false
+}
