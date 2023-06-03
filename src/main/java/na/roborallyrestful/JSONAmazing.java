@@ -27,7 +27,7 @@ public class JSONAmazing {
     public void writeJsonBoard(@RequestBody JsonNode jsonNode, @RequestParam String ID, @RequestParam String jsonFileName) {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
-        Path path1 = Paths.get(path, jsonFileName + ".json");
+        Path path1 = Paths.get(path, jsonFileName);
         File file = new File(path);
 
         if(!file.exists()){
@@ -39,7 +39,7 @@ public class JSONAmazing {
         }
 
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path,jsonFileName + ".json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path,jsonFileName), jsonNode);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }
