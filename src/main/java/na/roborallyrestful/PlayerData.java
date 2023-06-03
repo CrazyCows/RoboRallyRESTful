@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 @RestController
 public class PlayerData {
@@ -23,19 +25,42 @@ public class PlayerData {
 
     // Failsafe has been implemented here as the user can make a mistake
     @PostMapping("/jsonPlayer")
-    public void writeJsonBoard(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
+    public void getAndCombinePlayerData(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
-        File file = new File(path, "playerData.json");
+        File file = new File(path, "collectivePLayerData.json");
 
         if(file.exists()){
             try {
+                // Read old JSON file as a JsonNode
                 JsonNode playerData = objectMapper.readTree(file);
-                playerData.to
-                ArrayNode arrayNode1 = (ArrayNode) playerData;
-                ArrayNode arrayNode2 = (ArrayNode) jsonNode;
-                arrayNode2.addAll(arrayNode1);
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, arrayNode2);
+
+                // Create a new ArrayNode
+                ArrayNode merged = objectMapper.createArrayNode();
+
+                if (playerData.isArray()) {
+                    // Iterate through array elements
+                    for (JsonNode element : playerData) {
+                        // If the "name" field is "John", print the "age" field
+                        if ("Player 2".equals(element.get("name").asText())) {
+                            System.out.println("John's age is: " + element.get("color").asText());
+                            break;
+                        }
+                    }
+                }
+
+                // If playerData is an array, add its elements to the merged array
+                if (playerData.isArray()) {
+                    for (JsonNode element : playerData) {
+                        merged.add(element);
+                    }
+                }
+
+                // Add new JSON data to the merged array
+                merged.add(jsonNode);
+
+                // Write the merged array back to the file
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, merged);
             } catch (Exception e){
                 System.out.println(e);
             }
@@ -43,17 +68,18 @@ public class PlayerData {
         }
 
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "playerData.json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePLayerData.json"), jsonNode);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }
     }
-    // Failsafe implemented as the user must type in an ID to load a old game file which may cause errors
+
+
     @GetMapping("/jsonPlayer")
-    public JsonNode readJson(@RequestParam String ID) {
+    public JsonNode getPlayerData(@RequestParam String ID) {
         String path = "Games/" + ID;
         try {
-            File file = new File(path, "playerData.json");
+            File file = new File(path, "collectivePLayerData.json");
             JsonNode jsonNode = objectMapper.readTree(file);
             return jsonNode;
         } catch (IOException e) {
@@ -61,4 +87,18 @@ public class PlayerData {
         }
     }
 
+    @DeleteMapping("/jsonPlayer")
+    public void deleteJsonPlayerData(String ID){
+        String pathIn = "Games/" + ID + "/" + "collectivePlayerData.json";
+        // Create a File object representing the file to delete
+        File fileToDelete = new File(pathIn);
+
+        // Delete the file
+        if (fileToDelete.exists()) {
+            boolean deleted = fileToDelete.delete();
+            if (!deleted) {
+                throw new RuntimeException("File can't be deleted");
+            }
+        }
+    }
 }
