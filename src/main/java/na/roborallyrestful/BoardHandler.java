@@ -12,10 +12,10 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 
 @RestController
-public class BoardMovementHandler {
+public class BoardHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    BoardMovementHandler(){
+    BoardHandler(){
         File file = new File("Games");
         if (!file.exists()){
             file.mkdir();
@@ -23,40 +23,47 @@ public class BoardMovementHandler {
     }
 
     // Failsafe has been implemented here as the user can make a mistake
-    @PostMapping("/jsonMoves")
+    @PostMapping("/jsonBoard")
     public void writeJsonBoard(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
-        Path path1 = Paths.get(path, "moves.json");
+        Path path1 = Paths.get(path, "board.json");
+        File file = new File(path);
+
+        if(!file.exists()){
+            file.mkdir();
+        }
+
         if(Files.exists(path1)){
             throw new DirectoryExistsException();
         }
 
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "moves.json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "board.json"), jsonNode);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }
     }
 
+
     // The user has no direct input to updating the JSON files.
     // The computer wont make mistakes and as such no fail safe implemented
-    @PutMapping("/jsonMoves")
+    @PutMapping("/jsonBoard")
     public void updateJsonBoard(@RequestBody JsonNode jsonNode, @RequestParam String ID){
         String path = "Games/" + ID;
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "moves.json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "board.json"), jsonNode);
         } catch (IOException e){
             throw new ErrorWritingToFileException(e);
         }
     }
 
     // Failsafe implemented as the user must type in an ID to load a old game file which may cause errors
-    @GetMapping("/jsonMoves")
+    @GetMapping("/jsonBoard")
     public JsonNode readJson(@RequestParam String ID) {
         String path = "Games/" + ID;
         try {
-            File file = new File(path, "moves.json");
+            File file = new File(path, "board.json");
             JsonNode jsonNode = objectMapper.readTree(file);
             return jsonNode;
         } catch (IOException e) {
@@ -65,7 +72,7 @@ public class BoardMovementHandler {
     }
 
     // Deletes the whole folder, both board and moves
-    @DeleteMapping("/jsonMoves")
+    @DeleteMapping("/jsonBoard")
     public void deleteJsonBoard(String ID){
         String pathIn = "Games/" + ID;
         // Found on the interwebs... Checks all files in the holder and deletes them

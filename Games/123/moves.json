@@ -1,0 +1,9 @@
+{
+  "programmingCards" : [ {
+    "commandName" : "MOVEONE",
+    "command" : "MOVEONE",
+    "name" : "Move 1",
+    "imagePath" : "images/cards/programmingCardImages/Move1.png",
+    "actionClassName" : "dk.dtu.compute.se.pisd.roborally.controller.card.ProgrammingAction"
+  } ]
+}
