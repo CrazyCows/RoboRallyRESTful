@@ -26,14 +26,13 @@ public class PlayerData {
     public void createPlayerData(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
-        File file = new File(path, "collectivePLayerData.json");
         String playerName = jsonNode.get("name").asText();
+        File file = new File(path, "collectivePLayerData.json");
 
         if(file.exists()){
             try {
                 // Read old JSON file as a JsonNode
                 JsonNode playerData = objectMapper.readTree(file);
-
                 // Create a new ArrayNode
                 ArrayNode merged = objectMapper.createArrayNode();
 
@@ -78,13 +77,13 @@ public class PlayerData {
     @PutMapping("/jsonPlayer")
     public void updateExistingPlayerData(@RequestBody JsonNode newPlayerData,@RequestParam String ID) {
         String path = "Games/" + ID;
-        File file = new File(path, "collectivePlayerData.json");
         String playerName = newPlayerData.get("name").asText();
+        File file = new File(path, "collectivePlayerData.json");
+
         if(file.exists()){
             try {
                 // Read old JSON file as a JsonNode
                 JsonNode oldPlayerData = objectMapper.readTree(file);
-
                 // Create a new ArrayNode
                 ArrayNode updatedPlayerData = objectMapper.createArrayNode();
 
