@@ -22,13 +22,12 @@ public class PlayerData {
             file.mkdir();
         }
     }
-
-    // Failsafe has been implemented here as the user can make a mistake
     @PostMapping("/jsonPlayer")
-    public void getAndCombinePlayerData(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
+    public void createPlayerData(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
         File file = new File(path, "collectivePLayerData.json");
+        String playerName = jsonNode.get("name").asText();
 
         if(file.exists()){
             try {
@@ -38,12 +37,13 @@ public class PlayerData {
                 // Create a new ArrayNode
                 ArrayNode merged = objectMapper.createArrayNode();
 
+                // This function does nothing, read TODO
                 if (playerData.isArray()) {
                     // Iterate through array elements
                     for (JsonNode element : playerData) {
-                        // If the "name" field is "John", print the "age" field
-                        if ("Player 2".equals(element.get("name").asText())) {
-                            System.out.println("John's age is: " + element.get("color").asText());
+                        if (playerName.equals(element.get("name").asText())) {
+                            // TODO: Implement what happens if a player tries to register twice...
+                            // TODO: Players joining is handled and protected by the GUI. As such this function should not be needed. If issues, implement!
                             break;
                         }
                     }
@@ -76,58 +76,47 @@ public class PlayerData {
 
 
     @PutMapping("/jsonPlayer")
-    public void test(@RequestBody JsonNode jsonNode, @RequestParam String ID) {
-        // Creates a new DIR. Returns an error if the DIR already exists
+    public void updateExistingPlayerData(@RequestBody JsonNode newPlayerData,@RequestParam String ID) {
         String path = "Games/" + ID;
-        File file = new File(path, "collectivePLayerData.json");
-
+        File file = new File(path, "collectivePlayerData.json");
+        String playerName = newPlayerData.get("name").asText();
         if(file.exists()){
             try {
                 // Read old JSON file as a JsonNode
-                JsonNode playerData = objectMapper.readTree(file);
+                JsonNode oldPlayerData = objectMapper.readTree(file);
 
                 // Create a new ArrayNode
-                ArrayNode merged = objectMapper.createArrayNode();
+                ArrayNode updatedPlayerData = objectMapper.createArrayNode();
 
-                if (playerData.isArray()) {
+                if (oldPlayerData.isArray()) {
                     // Iterate through array elements
-                    for (JsonNode element : playerData) {
-                        // If the "name" field is "John", print the "age" field
-                        if ("Player 2".equals(element.get("name").asText())) {
-                            System.out.println("John's age is: " + element.get("color").asText());
-                            break;
+                    for (JsonNode element : oldPlayerData) {
+                        if (playerName.equals(element.get("name").asText())) {
+                            // If the player is found, update their data with the new data
+                            updatedPlayerData.add(newPlayerData);
+                        } else {
+                            // If the player isn't the one we're looking for, copy their data over without changes
+                            updatedPlayerData.add(element);
                         }
                     }
                 }
 
-                // If playerData is an array, add its elements to the merged array
-                if (playerData.isArray()) {
-                    for (JsonNode element : playerData) {
-                        merged.add(element);
-                    }
-                }
-
-                // Add new JSON data to the merged array
-                merged.add(jsonNode);
-
-                // Write the merged array back to the file
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, merged);
+                // Write the updated player data back to the file
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, updatedPlayerData);
             } catch (Exception e){
                 System.out.println(e);
             }
             return;
         }
 
-        try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePLayerData.json"), jsonNode);
-        } catch (IOException e) {
-            throw new ErrorWritingToFileException(e);
-        }
+        // If the file doesn't exist, no operation will be performed.
+        System.out.println("File does not exist.");
     }
 
     @GetMapping("/jsonPlayer")
     public JsonNode getPlayerData(@RequestParam String ID) {
         String path = "Games/" + ID;
+
         try {
             File file = new File(path, "collectivePLayerData.json");
             JsonNode jsonNode = objectMapper.readTree(file);
