@@ -78,7 +78,7 @@ public class PlayerData {
     public void updateExistingPlayerData(@RequestBody JsonNode newPlayerData,@RequestParam String ID) {
         String path = "Games/" + ID;
         String playerName = newPlayerData.get("name").asText();
-        File file = new File(path, "collectivePLayerData.json");
+        File file = new File(path, "collectivePlayerData.json");
 
         if(file.exists()){
             try {
