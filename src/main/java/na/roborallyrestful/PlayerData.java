@@ -117,7 +117,7 @@ public class PlayerData {
         String path = "Games/" + ID;
 
         try {
-            File file = new File(path, "collectivePLayerData.json");
+            File file = new File(path, "collectivePlayerData.json");
             JsonNode jsonNode = objectMapper.readTree(file);
             return jsonNode;
         } catch (IOException e) {
