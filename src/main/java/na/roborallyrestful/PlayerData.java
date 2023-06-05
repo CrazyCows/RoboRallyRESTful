@@ -27,7 +27,7 @@ public class PlayerData {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
         String playerName = jsonNode.get("name").asText();
-        File file = new File(path, "collectivePLayerData.json");
+        File file = new File(path, "collectivePlayerData.json");
 
         if(file.exists()){
             try {
@@ -67,7 +67,7 @@ public class PlayerData {
         }
 
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePLayerData.json"), jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), jsonNode);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }
