@@ -1,0 +1,13 @@
+[ {
+  "posX" : 2,
+  "posY" : 3,
+  "color" : "Red",
+  "name" : "Player 3",
+  "readyState" : false
+}, {
+  "posX" : 2,
+  "posY" : 3,
+  "color" : "green",
+  "name" : "Player 4",
+  "readyState" : false
+} ]
