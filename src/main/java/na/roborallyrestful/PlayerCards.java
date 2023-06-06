@@ -19,7 +19,7 @@ import java.util.Comparator;
 
 
 @RestController
-public class PlayerCards {
+public class PlayerCards {/*
     private ObjectMapper objectMapper = new ObjectMapper();
 
     PlayerCards(){
@@ -145,4 +145,4 @@ public class PlayerCards {
             }
         }
     }
-}
+*/}
