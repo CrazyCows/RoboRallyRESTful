@@ -11,9 +11,27 @@
   "name" : "Player 4",
   "readyState" : false
 }, {
-  "posX" : 2,
-  "posY" : 3,
-  "color" : "green2",
-  "name" : "Player 3",
-  "readyState" : false
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "benjamin"
+}, {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "benjamin"
+}, {
+  "posx" : 1,
+  "posy" : 1,
+  "energycubes" : 0,
+  "color" : "red",
+  "readystate" : false,
+  "playerisLead" : false,
+  "name" : "lassie"
 } ]

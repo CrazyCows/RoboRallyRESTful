@@ -27,7 +27,7 @@ public class PlayerData {
         // Creates a new DIR. Returns an error if the DIR already exists
         String path = "Games/" + ID;
         String playerName = jsonNode.get("name").asText();
-        File file = new File(path, "collectivePLayerData.json");
+        File file = new File(path, "collectivePlayerData.json");
 
         if(file.exists()){
             try {
@@ -67,7 +67,9 @@ public class PlayerData {
         }
 
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePLayerData.json"), jsonNode);
+            ArrayNode arrayIt = objectMapper.createArrayNode();
+            arrayIt.add(jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), arrayIt);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }
@@ -78,8 +80,7 @@ public class PlayerData {
     public void updateExistingPlayerData(@RequestBody JsonNode newPlayerData,@RequestParam String ID) {
         String path = "Games/" + ID;
         String playerName = newPlayerData.get("name").asText();
-        System.out.println(playerName);
-        File file = new File(path, "collectivePLayerData.json");
+        File file = new File(path, "collectivePlayerData.json");
 
         if(file.exists()){
             try {
@@ -118,7 +119,7 @@ public class PlayerData {
         String path = "Games/" + ID;
 
         try {
-            File file = new File(path, "collectivePLayerData.json");
+            File file = new File(path, "collectivePlayerData.json");
             JsonNode jsonNode = objectMapper.readTree(file);
             return jsonNode;
         } catch (IOException e) {
