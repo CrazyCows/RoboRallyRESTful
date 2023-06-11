@@ -60,10 +60,10 @@ public class JSONAmazing {
 
     // Failsafe implemented as the user must type in an ID to load a old game file which may cause errors
     @GetMapping("/jsonHandler")
-    public JsonNode readJson(@RequestParam String ID, @RequestParam String jsonFileName) {
+    public JsonNode readJson(@RequestParam String ID) {
         String path = "Games/" + ID;
         try {
-            File file = new File(path, jsonFileName + ".json");
+            File file = new File(path, "sharedBoard.json");
             JsonNode jsonNode = objectMapper.readTree(file);
             return jsonNode;
         } catch (IOException e) {
