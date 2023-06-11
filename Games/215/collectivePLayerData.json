@@ -1,0 +1,7 @@
+[ {
+  "posX" : 2,
+  "posY" : 3,
+  "color" : "Red",
+  "name" : "Player 3",
+  "readyState" : false
+} ]
