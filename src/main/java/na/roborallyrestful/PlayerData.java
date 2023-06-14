@@ -67,9 +67,9 @@ public class PlayerData {
         }
 
         try {
-            ArrayNode arrayIt = objectMapper.createArrayNode();
-            arrayIt.add(jsonNode);
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), arrayIt);
+            ArrayNode arrayNode = objectMapper.createArrayNode();
+            arrayNode.add(jsonNode);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(path, "collectivePlayerData.json"), arrayNode);
         } catch (IOException e) {
             throw new ErrorWritingToFileException(e);
         }

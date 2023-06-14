@@ -40,10 +40,10 @@ public class customExceptions {
 
 
 // Primitive error messages
-@ResponseStatus(value = HttpStatus.CONFLICT, reason = "File already exists")
+@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Dir already exists")
 class DirectoryExistsException extends RuntimeException {
     public DirectoryExistsException() {
-        super("File already exists");
+        super("Dir already exists");
     }
 }
 

@@ -12,10 +12,10 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 
 @RestController
-public class JSONAmazing {
+public class BoardData {
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    JSONAmazing(){
+    BoardData(){
         File file = new File("Games");
         if (!file.exists()){
             file.mkdir();
